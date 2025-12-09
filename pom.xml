@@ -1,0 +1,337 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- License -->
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/license/mit</url>
+        </license>
+    </licenses>
+
+    <!-- Developers -->
+    <developers>
+        <developer>
+            <name>Willi Schönborn</name>
+            <email>willi.schoenborn@zalando.de</email>
+            <organization>Zalando SE</organization>
+            <organizationUrl>https://tech.zalando.com/</organizationUrl>
+            <roles>
+                <role>Original author</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>a5423</id>
+            <name>@a5423</name>
+            <url>https://github.com/a5423</url>
+            <roles>
+                <role>Fork maintainer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <!-- SCM -->
+    <scm>
+        <url>https://github.com/a5423/jackson3-datatype-problem</url>
+        <connection>scm:git:git@github.com:a5423/jackson3-datatype-problem.git</connection>
+        <developerConnection>scm:git:git@github.com:a5423/jackson3-datatype-problem.git</developerConnection>
+    </scm>
+
+    <!-- Distribution Management -->
+    <distributionManagement>
+        <repository>
+            <id>ossrh</id>
+            <url>https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <!-- Basic Project Info -->
+    <groupId>io.github.a5423</groupId>
+    <artifactId>jackson3-datatype-problem</artifactId>
+    <version>1.0.0</version>
+
+    <packaging>jar</packaging>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>
+        Jackson 3.x datatype module for RFC 7807 Problem Details.
+        Fork of zalando/jackson-datatype-problem adapted for Jackson 3.x compatibility.
+    </description>
+    <url>https://github.com/a5423/jackson3-datatype-problem</url>
+    <inceptionYear>2025</inceptionYear>
+
+    <!-- Properties -->
+    <properties>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jackson.version>3.0.3</jackson.version>
+        <problem.version>0.27.1</problem.version>
+    </properties>
+
+    <!-- Build -->
+    <build>
+        <plugins>
+            <!-- Compiler -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.1</version>
+                <configuration>
+                    <release>${java.version}</release>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+
+            <!-- Testing -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.4</version>
+            </plugin>
+
+            <!-- Code Coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.14</version>
+                <configuration>
+                    <destFile>${project.build.directory}/jacoco.exec</destFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>CLASS</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.8</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>BRANCH</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.8</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Enforcer -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.6.2</version>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>[17,)</version>
+                                </requireJavaVersion>
+                                <banDuplicatePomDependencyVersions/>
+                                <dependencyConvergence/>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Duplicate finder -->
+            <plugin>
+                <groupId>org.basepom.maven</groupId>
+                <artifactId>duplicate-finder-maven-plugin</artifactId>
+                <version>2.0.1</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <failBuildInCaseOfDifferentContentConflict>true</failBuildInCaseOfDifferentContentConflict>
+                            <failBuildInCaseOfEqualContentConflict>false</failBuildInCaseOfEqualContentConflict>
+                            <ignoredResourcePatterns>
+                                <ignoredResourcePattern>.*</ignoredResourcePattern>
+                            </ignoredResourcePatterns>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Security Scan -->
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>12.1.9</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <failBuildOnCVSS>9</failBuildOnCVSS>
+                    <skipTestScope>true</skipTestScope>
+                    <format>HTML</format>
+                </configuration>
+            </plugin>
+
+            <!-- GPG signing -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.2.8</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                        <configuration>
+                            <useAgent>true</useAgent>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Nexus Staging -->
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.9.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>true</autoPublish>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.4.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.12.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <!-- Dependencies -->
+    <dependencies>
+        <!-- Main dependencies -->
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>problem</artifactId>
+            <version>${problem.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apiguardian</groupId>
+            <artifactId>apiguardian-api</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.checkerframework</groupId>
+            <artifactId>checker-qual</artifactId>
+            <version>3.52.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Jackson -->
+        <dependency>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.14.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>3.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>2.0.17</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path-assert</artifactId>
+            <version>2.10.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

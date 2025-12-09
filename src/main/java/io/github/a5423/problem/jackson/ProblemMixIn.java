@@ -1,0 +1,55 @@
+/**
+ * MIT License
+ * Copyright (c) 2015-2025 Willi Schönborn <w.schoenborn@gmail.com>
+ * Copyright (c) 2025 a5423
+ */
+package io.github.a5423.problem.jackson;
+
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.zalando.problem.DefaultProblem;
+import org.zalando.problem.Problem;
+import org.zalando.problem.StatusType;
+import tools.jackson.databind.annotation.JsonSerialize;
+
+import java.net.URI;
+import java.util.Map;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type",
+        defaultImpl = DefaultProblem.class,
+        visible = true)
+@JsonInclude(NON_EMPTY)
+interface ProblemMixIn extends Problem {
+
+    @JsonProperty("type")
+    @JsonSerialize(converter = ProblemTypeConverter.class)
+    @Override
+    URI getType();
+
+    @JsonProperty("title")
+    @Override
+    String getTitle();
+
+    @JsonProperty("status")
+    @Override
+    StatusType getStatus();
+
+    @JsonProperty("detail")
+    @Override
+    String getDetail();
+
+    @JsonProperty("instance")
+    @Override
+    URI getInstance();
+
+    @JsonAnyGetter
+    @Override
+    Map<String, Object> getParameters();
+
+}
