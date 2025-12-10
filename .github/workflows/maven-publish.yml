@@ -1,13 +1,17 @@
 name: Release Publication
+
 on:
   release:
     types: [created]
+
 jobs:
   build:
+
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -23,7 +27,7 @@ jobs:
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
         settings-path: ${{ github.workspace }}
     - name: Build with Maven
-      run: mvn --batch-mode clean verify -DnvdApiKey=${{ secrets.NVD_API_KEY }} -DossIndexUsername=${{ secrets.OSSINDEX_USERNAME }} -DossIndexPassword=${{ secrets.OSSINDEX_PASSWORD }} --file pom.xml
+      run: mvn --batch-mode verify -DnvdApiKey=${{ secrets.NVD_API_KEY }} -DossIndexUsername=${{ secrets.OSSINDEX_USERNAME }} -DossIndexPassword=${{ secrets.OSSINDEX_PASSWORD }} --file pom.xml
     - name: Publish to GitHub and Maven
       run: mvn --batch-mode deploy -DskipTests -P release -s $GITHUB_WORKSPACE/settings.xml
       env:
