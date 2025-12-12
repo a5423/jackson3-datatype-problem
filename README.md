@@ -1,3 +1,5 @@
+[![Maven Package](https://github.com/a5423/jackson3-datatype-problem/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/a5423/jackson3-datatype-problem/actions/workflows/maven-publish.yml)
+
 # jackson3-datatype-problem
 
 > Fork of [jackson-datatype-problem](https://github.com/zalando/problem) by Willi Schönborn
