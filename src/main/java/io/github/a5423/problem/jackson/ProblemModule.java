@@ -57,7 +57,6 @@ public final class ProblemModule extends JacksonModule {
         return ProblemModule.class.getSimpleName();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public Version version() {
          return Version.unknownVersion();
