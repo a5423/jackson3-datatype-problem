@@ -1,5 +1,6 @@
 [![Maven Package](https://github.com/a5423/jackson3-datatype-problem/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/a5423/jackson3-datatype-problem/actions/workflows/maven-publish.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![codecov](https://codecov.io/github/a5423/jackson3-datatype-problem/graph/badge.svg?token=BQJ6RICWNF)](https://codecov.io/github/a5423/jackson3-datatype-problem)
 
 # jackson3-datatype-problem
 
