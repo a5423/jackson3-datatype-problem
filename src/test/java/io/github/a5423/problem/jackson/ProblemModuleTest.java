@@ -8,6 +8,7 @@ package io.github.a5423.problem.jackson;
 import org.junit.jupiter.api.Test;
 import org.zalando.problem.Status;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 final class ProblemModuleTest {
@@ -19,7 +20,8 @@ final class ProblemModuleTest {
 
     @Test
     void shouldThrowForDuplicateStatusCode() {
-        assertThrows(IllegalArgumentException.class, () -> new ProblemModule(Status.class, CustomStatus.class));
+        assertThatThrownBy(() -> new ProblemModule(Status.class, CustomStatus.class))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
 }

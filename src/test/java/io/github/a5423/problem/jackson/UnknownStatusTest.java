@@ -5,9 +5,11 @@
  */
 package io.github.a5423.problem.jackson;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 class UnknownStatusTest {
 
@@ -15,8 +17,12 @@ class UnknownStatusTest {
     void shouldReturnCodeAndPhrase() {
         final int code = 8080;
         final UnknownStatus status = new UnknownStatus(code);
-        assertEquals(8080, status.getStatusCode());
-        assertEquals("Unknown", status.getReasonPhrase());
+
+        Assertions.assertThat(status)
+                        .satisfies(v->{
+                            assertThat(v.getStatusCode()).isEqualTo(8080);
+                            assertThat(v.getReasonPhrase()).isEqualTo("Unknown");
+                        });
     }
 
 }
