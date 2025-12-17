@@ -19,10 +19,10 @@ class UnknownStatusTest {
         final UnknownStatus status = new UnknownStatus(code);
 
         Assertions.assertThat(status)
-                        .satisfies(v->{
-                            assertThat(v.getStatusCode()).isEqualTo(8080);
-                            assertThat(v.getReasonPhrase()).isEqualTo("Unknown");
-                        });
+                .satisfies(v -> {
+                    assertThat(v.getStatusCode()).isEqualTo(8080);
+                    assertThat(v.getReasonPhrase()).isEqualTo("Unknown");
+                });
     }
 
 }

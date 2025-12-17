@@ -22,7 +22,7 @@ public final class JacksonStackTraceProcessor implements StackTraceProcessor {
 
         return elements.stream()
                 .filter(startsWith(
-                        "sun.reflect", 
+                        "sun.reflect",
                         "java.lang.reflect",
                         "java.lang.invoke",
                         "jdk.internal.reflect",

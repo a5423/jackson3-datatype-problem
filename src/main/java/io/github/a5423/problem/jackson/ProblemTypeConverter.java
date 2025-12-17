@@ -5,8 +5,8 @@
  */
 package io.github.a5423.problem.jackson;
 
-import tools.jackson.databind.util.StdConverter;
 import org.zalando.problem.Problem;
+import tools.jackson.databind.util.StdConverter;
 
 import java.net.URI;
 

@@ -35,7 +35,7 @@ public final class ProblemModule extends JacksonModule {
     /**
      * TODO document
      *
-     * @param <E> generic enum type
+     * @param <E>   generic enum type
      * @param types status type enums
      * @throws IllegalArgumentException if there are duplicate status codes across all status types
      */
@@ -59,7 +59,7 @@ public final class ProblemModule extends JacksonModule {
 
     @Override
     public Version version() {
-         return Version.unknownVersion();
+        return Version.unknownVersion();
     }
 
     @Override

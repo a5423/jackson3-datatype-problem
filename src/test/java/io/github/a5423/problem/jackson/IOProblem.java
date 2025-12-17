@@ -25,10 +25,10 @@ public final class IOProblem extends IOException implements Exceptional {
 
     @JsonCreator
     public IOProblem(@JsonProperty("type") final URI type,
-            @JsonProperty("title") final String title,
-            @JsonProperty("status") final StatusType status,
-            @JsonProperty("detail") final String detail,
-            @JsonProperty("instance") final URI instance) {
+                     @JsonProperty("title") final String title,
+                     @JsonProperty("status") final StatusType status,
+                     @JsonProperty("detail") final String detail,
+                     @JsonProperty("instance") final URI instance) {
         this.type = type;
         this.title = title;
         this.status = status;

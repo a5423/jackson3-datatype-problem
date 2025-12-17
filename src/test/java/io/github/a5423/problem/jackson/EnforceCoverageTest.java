@@ -10,7 +10,6 @@ import org.zalando.problem.AbstractThrowableProblem;
 import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.zalando.problem.Status.BAD_REQUEST;
 
 final class EnforceCoverageTest {
