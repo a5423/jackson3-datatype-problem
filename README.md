@@ -58,7 +58,7 @@ JsonMapper mapper = JsonMapper.builder()
         .build();
 ```
 
-### Handling problems
+## Handling problems
 
 Reading problems is very specific to the JSON parser in use. This section assumes you're using Jackson, in which case
 reading/parsing problems usually boils down to this:
