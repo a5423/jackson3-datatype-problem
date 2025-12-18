@@ -64,7 +64,7 @@ Reading problems is very specific to the JSON parser in use. This section assume
 reading/parsing problems usually boils down to this:
 
 ```java
-Problem problem = mapper.readValue(..,Problem .class);
+Problem problem = mapper.readValue(json, Problem.class);
 ```
 
 Jackson is now able to deserialize specific problems into their respective types. By default, e.g. if a type is not
@@ -74,12 +74,11 @@ If you used the `Exceptional` interface rather than `ThrowableProblem` you have 
 
 ```java
 try{
-        throw mapper.readValue(..,Exceptional .class).
+        throw mapper.readValue(json, Exceptional .class).
 
 propagate();
 }catch(
 OutOfStockProblem e){
-        ...
 ```
 
 Important aspect of exceptions are stack traces, but since they leak implementation details to the outside
