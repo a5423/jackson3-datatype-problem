@@ -74,11 +74,10 @@ If you used the `Exceptional` interface rather than `ThrowableProblem` you have 
 
 ```java
 try{
-        throw mapper.readValue(json, Exceptional .class).
-
-propagate();
-}catch(
-OutOfStockProblem e){
+    throw mapper.readValue(json, Exceptional.class).propagate();
+} catch (OutOfStockProblem e) {
+    // some code
+}
 ```
 
 Important aspect of exceptions are stack traces, but since they leak implementation details to the outside
@@ -107,7 +106,7 @@ After enabling stack traces all problems will contain a `stacktrace` property:
 ```
 
 There is currently, by design, no way to deserialize stack trace from JSON.
-Nevertheless the runtime will fill in the stack trace when the problem instance is created. That stack trace is usually
+Nevertheless, the runtime will fill in the stack trace when the problem instance is created. That stack trace is usually
 not 100% correct, since it looks like the exception originated inside your deserialization framework. *Problem* comes
 with a special service provider interface `StackTraceProcessor` that can be registered using the
 [
