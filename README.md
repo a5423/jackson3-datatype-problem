@@ -6,27 +6,30 @@
 
 > Fork of [jackson-datatype-problem](https://github.com/zalando/problem) by Willi Schönborn
 
-Jackson 3 datatype problem built on top of org.zalando:jackson-datatype-problem:0.28.0-SNAPSHOT
+A Jackson 3 module built on top of `org.zalando:jackson-datatype-problem:0.28.0-SNAPSHOT`, providing
+`application/problem+json` support for Jackson 3.x.
 
-The project aims to add a `problem-data-type` implementation for Jackson3, avoiding serious interference with previously
-developed code.
+This project adds a `problem-datatype` implementation for Jackson 3 with minimal interference in existing codebases.
 
 ## Features
 
-- tools for json serialization and deserialization of `application/problem+json`
+- JSON serialization and deserialization of `application/problem+json` (RFC 7807)
+- Full compatibility with Jackson 3.x, including immutable `ObjectMapper`
+- Optional stack trace serialization for debugging
+- Support for nested problems via `cause`
+- SPI-based auto-discovery through `ServiceLoader`
 
-The jackson3-datatype-problem library does not alter the functionality of the original org.zalando:
-jackson-datatype-problem library. However, version 1.0.0 does not use the Java module system.
+> ⚠️ Version 1.0.0 does **not** use the Java Module System (JPMS).
 
 ## Dependencies
 
-- Java 17
-- Any build tool using Maven Central, or direct download
+- Java 17+
 - Jackson 3.x
+- Build tool that supports Maven Central (Maven, Gradle, etc.)
 
 ## Installation
 
-Add the following dependency to your project:
+Add the dependency to your `pom.xml`:
 
 ```xml
 
@@ -55,8 +58,6 @@ JsonMapper mapper = JsonMapper.builder()
         .build();
 ```
 
-## Usage
-
 ### Handling problems
 
 Reading problems is very specific to the JSON parser in use. This section assumes you're using Jackson, in which case
@@ -81,44 +82,7 @@ OutOfStockProblem e){
         ...
 ```
 
-### Stack traces and causal chains
-
-Exceptions in Java can be chained/nested using *causes*. `ThrowableProblem` adapts the pattern seamlessly to problems:
-
-```java
-ThrowableProblem problem = Problem.builder()
-        .withType(URI.create("https://example.org/order-failed"))
-        .withTitle("Order failed")
-        .withStatus(BAD_REQUEST)
-        .withCause(Problem.builder()
-                .withType(URI.create("https://example.org/out-of-stock"))
-                .withTitle("Out of Stock")
-                .withStatus(BAD_REQUEST)
-                .build())
-        .build();
-    
-problem.
-
-getCause(); // standard API of java.lang.Throwable
-```
-
-Will produce this:
-
-```json
-{
-  "type": "https://example.org/order-failed",
-  "title": "Order failed",
-  "status": 400,
-  "cause": {
-    "type": "https://example.org/out-of-stock",
-    "title": "Out of Stock",
-    "status": 400,
-    "detail": "Item B00027Y5QG is no longer available"
-  }
-}
-```
-
-Another important aspect of exceptions are stack traces, but since they leak implementation details to the outside
+Important aspect of exceptions are stack traces, but since they leak implementation details to the outside
 world, **we strongly advise against exposing them** in problems. That being said, there is a legitimate use case when
 you're debugging an issue on an integration environment and you don't have direct access to the log files. Serialization
 of stack traces can be enabled on the problem module:
@@ -143,7 +107,7 @@ After enabling stack traces all problems will contain a `stacktrace` property:
 }
 ```
 
-Since we discourage the serialization of them, there is currently, by design, no way to deserialize them from JSON.
+There is currently, by design, no way to deserialize stack trace from JSON.
 Nevertheless the runtime will fill in the stack trace when the problem instance is created. That stack trace is usually
 not 100% correct, since it looks like the exception originated inside your deserialization framework. *Problem* comes
 with a special service provider interface `StackTraceProcessor` that can be registered using the
@@ -160,4 +124,4 @@ public interface StackTraceProcessor {
 }
 ```
 
-By default no processing takes place.
+By default no stack trace processing takes place.
